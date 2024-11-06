@@ -1,0 +1,21 @@
+// Artist Registration
+app.post('/api/artist/register', async (req, res) => {
+    const { name, email, password, location, contactInfo, styles } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newArtist = new Artist({ name, email, password: hashedPassword, location, contactInfo, styles });
+    await newArtist.save();
+    res.status(201).json({ message: 'Artist registered successfully' });
+});
+
+// Add Artist Availability
+app.post('/api/artist/availability', async (req, res) => {
+    const { artistId, availableTime } = req.body;
+    const artist = await Artist.findById(artistId);
+    if (artist) {
+        artist.availableTimes.push(new Date(availableTime));
+        await artist.save();
+        res.json({ message: 'Availability added successfully' });
+    } else {
+        res.status(404).json({ message: 'Artist not found' });
+    }
+});
