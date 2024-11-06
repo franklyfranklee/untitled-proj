@@ -1,0 +1,28 @@
+// User Profile Schema
+const userSchema = new mongoose.Schema({
+    name: String,
+    email: String,
+    password: String,
+    location: String,  // e.g., city or postal code
+    contactInfo: String,
+});
+
+// Artist Profile Schema
+const artistSchema = new mongoose.Schema({
+    name: String,
+    email: String,
+    password: String,
+    location: String,  // e.g., city or postal code
+    contactInfo: String,
+    styles: [String],  // e.g., ['Traditional', 'Realism', 'Watercolor']
+    availableTimes: [Date]  // List of available times
+});
+
+// Booking Schema
+const bookingSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    artistId: { type: mongoose.Schema.Types.ObjectId, ref: 'Artist' },
+    bookingTime: Date,
+    tattooStyle: String,
+    location: String
+});
