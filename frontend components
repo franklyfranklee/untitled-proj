@@ -1,0 +1,34 @@
+// Booking Component (React)
+function BookingPage() {
+    const [location, setLocation] = useState('');
+    const [style, setStyle] = useState('');
+    const [time, setTime] = useState('');
+    const [artists, setArtists] = useState([]);
+
+    const searchArtists = async () => {
+        const response = await fetch(`/api/search-artists?location=${location}&style=${style}&time=${time}`);
+        const data = await response.json();
+        setArtists(data.artists);
+    };
+
+    return (
+        <div>
+            <h2>Find a Tattoo Artist</h2>
+            <input placeholder="Location" value={location} onChange={e => setLocation(e.target.value)} />
+            <input placeholder="Tattoo Style" value={style} onChange={e => setStyle(e.target.value)} />
+            <input type="datetime-local" value={time} onChange={e => setTime(e.target.value)} />
+            <button onClick={searchArtists}>Search</button>
+
+            <div>
+                <h3>Available Artists</h3>
+                {artists.map(artist => (
+                    <div key={artist._id}>
+                        <h4>{artist.name}</h4>
+                        <p>Style: {artist.styles.join(', ')}</p>
+                        <p>Location: {artist.location}</p>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
