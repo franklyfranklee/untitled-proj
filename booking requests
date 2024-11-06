@@ -1,0 +1,21 @@
+// Filter Artists Based on Criteria
+app.get('/api/search-artists', async (req, res) => {
+    const { location, style, time } = req.query;
+    const availableTime = new Date(time);
+
+    const artists = await Artist.find({
+        location: location,
+        styles: style,
+        availableTimes: { $gte: availableTime }
+    });
+
+    res.json({ artists });
+});
+
+// Create Booking
+app.post('/api/booking', async (req, res) => {
+    const { userId, artistId, bookingTime, tattooStyle, location } = req.body;
+    const newBooking = new Booking({ userId, artistId, bookingTime, tattooStyle, location });
+    await newBooking.save();
+    res.status(201).json({ message: 'Booking created successfully' });
+});
